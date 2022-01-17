@@ -21,8 +21,10 @@ import android.content.res.Resources
 import android.os.Build
 import android.text.Html
 import android.text.Spanned
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ca.stran1121.mysleeptracker.R
 import ca.stran1121.mysleeptracker.database.entity.SleepNight
@@ -144,10 +146,38 @@ fun formatNights(nights: List<SleepNight>, resources: Resources): Spanned {
     }
 }
 
-/**
- * ViewHolder that holds a single [TextView].
- *
- * A ViewHolder holds a view for the [RecyclerView] as well as providing additional information
- * to the RecyclerView such as where on the screen it was last drawn during scrolling.
- */
-class TextItemViewHolder(val textView: TextView): RecyclerView.ViewHolder(textView)
+//Binding Adapter for list item
+@BindingAdapter("sleepQualityString")
+fun setQualityString(view: TextView, sleepNight: SleepNight?) {
+    sleepNight?.let {
+        view.text = convertNumericQualityToString(sleepNight.sleepQuality, view.context.resources)
+    }
+}
+
+@BindingAdapter("sleepLengthFormatted")
+fun setQualityLength(view: TextView, sleepNight: SleepNight?) {
+    sleepNight?.let {
+        view.text = convertDurationToFormatted(
+            sleepNight.startTimeMilli,
+            sleepNight.endTimeMilli,
+            view.context.resources
+        )
+    }
+}
+
+@BindingAdapter("sleepImageQuality")
+fun setImageView(view: ImageView, sleepNight: SleepNight?) {
+    sleepNight?.let {
+        view.setImageResource(
+            when (sleepNight.sleepQuality) {
+                0 -> R.drawable.ic_sleep_0
+                1 -> R.drawable.ic_sleep_1
+                2 -> R.drawable.ic_sleep_2
+                3 -> R.drawable.ic_sleep_3
+                4 -> R.drawable.ic_sleep_4
+                5 -> R.drawable.ic_sleep_5
+                else -> R.drawable.ic_sleep_active
+            }
+        )
+    }
+}
