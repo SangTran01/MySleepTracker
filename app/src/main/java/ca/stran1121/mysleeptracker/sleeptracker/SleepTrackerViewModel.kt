@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import ca.stran1121.mysleeptracker.database.dao.SleepNightDao
 import ca.stran1121.mysleeptracker.database.entity.SleepNight
-import ca.stran1121.mysleeptracker.formatNights
+import com.example.android.trackmysleepquality.formatNights
 import kotlinx.coroutines.launch
 
 class SleepTrackerViewModel(
@@ -14,7 +14,7 @@ class SleepTrackerViewModel(
 
     private var tonight = MutableLiveData<SleepNight?>()
 
-    private val nights = sleepNightDao.getAllNights()
+    val nights = sleepNightDao.getAllNights()
 
     init {
         initializeTonight()
