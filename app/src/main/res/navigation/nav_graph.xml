@@ -14,6 +14,9 @@
             android:id="@+id/action_sleepTrackerFragment_to_sleepQualityFragment"
             app:destination="@id/sleepQualityFragment" >
         </action>
+        <action
+            android:id="@+id/action_sleepTrackerFragment_to_sleepDetailFragment"
+            app:destination="@id/sleepDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/sleepQualityFragment"
@@ -25,6 +28,18 @@
             app:argType="long" />
         <action
             android:id="@+id/action_sleepQualityFragment_to_sleepTrackerFragment"
+            app:destination="@id/sleepTrackerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sleepDetailFragment"
+        android:name="ca.stran1121.mysleeptracker.sleepDetail.SleepDetailFragment"
+        android:label="SleepDetailFragment"
+        tools:layout="@layout/fragment_sleep_detail">
+        <argument
+            android:name="sleepNightId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_sleepDetailFragment_to_sleepTrackerFragment"
             app:destination="@id/sleepTrackerFragment" />
     </fragment>
 </navigation>

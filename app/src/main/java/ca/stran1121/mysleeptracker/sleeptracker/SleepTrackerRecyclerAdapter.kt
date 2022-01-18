@@ -4,19 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.NonNull
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ca.stran1121.mysleeptracker.R
 import ca.stran1121.mysleeptracker.database.entity.SleepNight
 import ca.stran1121.mysleeptracker.databinding.ListItemSleepTrackerBinding
-import com.example.android.trackmysleepquality.convertDurationToFormatted
-import com.example.android.trackmysleepquality.convertNumericQualityToString
 
 
 //change from using default Recycler.Adapter to use Reccycler.Listadapter
-class SleepTrackerRecyclerAdapter :
+class SleepTrackerRecyclerAdapter(val clickListener: SleepNightClickListener) :
     ListAdapter<SleepNight, SleepTrackerRecyclerAdapter.ViewHolder>(SleepNightDiffCallback()) {
 
     class ViewHolder private constructor(val binding: ListItemSleepTrackerBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -24,8 +20,9 @@ class SleepTrackerRecyclerAdapter :
         val textViewSleepLength: TextView = binding.sleepLength
         val imageViewQuality: ImageView = binding.qualityImage
 
-        fun bind(item: SleepNight) {
+        fun bind(item: SleepNight, clickListener: SleepNightClickListener) {
             binding.sleepNight = item
+            binding.sleepNightClickListener = clickListener
             binding.executePendingBindings()
         }
 
@@ -46,7 +43,7 @@ class SleepTrackerRecyclerAdapter :
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val item = getItem(position) //from ListAdapter getItem()
-        viewHolder.bind(item)
+        viewHolder.bind(item, clickListener)
     }
 
     //ListAdapter can figure out item Count
@@ -67,4 +64,13 @@ class SleepNightDiffCallback : DiffUtil.ItemCallback<SleepNight>() {
         return oldItem == newItem
     }
 
+}
+
+//clickListener
+//1. create class clickListener
+//2. pass to ViewHolder
+class SleepNightClickListener(val clickListener: (sleepId: Long) -> Unit) {
+    fun onClick(sleepNight: SleepNight) {
+        clickListener(sleepNight.nightId)
+    }
 }

@@ -7,12 +7,16 @@
         <variable
             name="sleepNight"
             type="ca.stran1121.mysleeptracker.database.entity.SleepNight" />
+        <variable
+            name="sleepNightClickListener"
+            type="ca.stran1121.mysleeptracker.sleeptracker.SleepNightClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> sleepNightClickListener.onClick(sleepNight)}">
 
         <ImageView
             android:id="@+id/quality_image"

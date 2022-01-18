@@ -1,10 +1,12 @@
 package ca.stran1121.mysleeptracker.sleeptracker
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -36,7 +38,11 @@ class SleepTrackerFragment : Fragment() {
         binding.sleepTrackerViewModel = viewModel
         binding.lifecycleOwner = this
 
-        val adapter = SleepTrackerRecyclerAdapter()
+        val adapter = SleepTrackerRecyclerAdapter(SleepNightClickListener {
+            viewModel.startNavigatingDetail(it)
+        })
+
+
         binding.sleepList.adapter = adapter
 
         viewModel.nights.observe(viewLifecycleOwner, Observer {
@@ -54,6 +60,18 @@ class SleepTrackerFragment : Fragment() {
                     )
 
                 viewModel.doneNavigating() //call this to set it null
+            }
+        })
+
+        viewModel.navigateToSleepDetail.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                //navigate
+                this.findNavController()
+                    .navigate(
+                        SleepTrackerFragmentDirections
+                            .actionSleepTrackerFragmentToSleepDetailFragment(it)
+                    )
+                viewModel.doneNavigatingDetail()
             }
         })
 
